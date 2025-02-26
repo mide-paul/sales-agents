@@ -12,7 +12,7 @@ const page = () => {
                 <Header />
             </div>
             <div className='max-w-6xl min-h-[880px] ml-64 top-14 bg-white'>
-
+                <h1 className='pt-14 ml-5 text-blue-900 font-bold text-base'>Ebooks</h1>
             </div>
         </div>
     )

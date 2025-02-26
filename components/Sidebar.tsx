@@ -46,7 +46,7 @@ const Sidebar = () => {
                 }`}
               >
                 <div className="flex items-center">
-                  <span className="material-icons mr-3 text-xs">{tab.icon}</span>
+                  <span className="material-icons-outlined mr-3 text-xs">{tab.icon}</span>
                   {tab.name}
                 </div>
               </a>

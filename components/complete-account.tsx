@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import logo from './.../../../public/images/logo.png';
 import google from './.../../../public/icons/google.png';
 import envelope from './.../../../public/icons/envelope.png';
@@ -14,7 +14,6 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?&()_+={}[:;'"<>,|/~!
 
 const Login = () => {
     const userRef = useRef<HTMLInputElement | null>(null);
-    const searchParams = useSearchParams();
     const router = useRouter();
     const { setUser, error } = useAuthStore();
     const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +25,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
-
+    const [token, setToken] = useState<string | null>(null); // Store token
     const [rememberMe, setRememberMe] = useState(false);
     const [loading, setLoading] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
@@ -42,47 +41,49 @@ const Login = () => {
     }, [password])
 
     useEffect(() => {
-        const token = searchParams.get("token"); // Extract token from URL
-        if (!token) {
-            setFetchError("Invalid or missing token.");
-            return;
-        }
-
-        const fetchUserDetails = async () => {
-            try {
-                const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch user details");
-                }
-
-                const userData = await response.json();
-                setUser(userData); // Store user details in auth state
-                setEmail(userData.email); // Auto-populate email field
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setFetchError(err.message);
-                } else {
-                    setFetchError("An unexpected error occurred.");
-                }
+        const fetchTokenAndUser = async () => {
+          try {
+            const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: 'include'  // This ensures cookies and credentials are sent
+            });
+      
+            if (!response.ok) {
+              throw new Error("Failed to verify user.");
             }
+      
+            const data = await response.json();
+            
+            // Assuming you want to check that token exists; if not, throw an error.
+            if (!data.token) {
+              throw new Error("Token not received.");
+            }
+            
+            setToken(data.token);
+            setUser(data); // Save user details
+            setEmail(data.email); // Auto-fill email
+          } catch (err: unknown) {
+            setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
+          }
         };
+      
+        fetchTokenAndUser();
+      }, []);
 
-        fetchUserDetails();
-    }, [searchParams, setUser]);
-
-    const handleSubmit = async (e: React.FormEvent) => {
+      const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
+        if (!token) {
+            setFetchError("No authentication token found.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const token = searchParams.get("token"); // Get the token from the URL
             const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/complete", {
                 method: "POST",
                 headers: {
@@ -100,14 +101,10 @@ const Login = () => {
             }
 
             const data = await response.json();
-            setUser(data); // Store user data
-            router.push("/dashboard"); // Redirect after successful login
+            setUser(data);
+            router.push("/dashboard");
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setFetchError(err.message);
-            } else {
-                setFetchError("An unexpected error occurred.");
-            }
+            setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
         } finally {
             setLoading(false);
         }

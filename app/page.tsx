@@ -17,7 +17,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?&()_+={}[:;'"<>,|/~!
 const CompanyLogin = () => {
   const userRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
-  const { login, error, isAuthenticated } = useAuthStore();
+  const { login, error } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -47,12 +47,12 @@ const CompanyLogin = () => {
     setValidPassword(PWD_REGEX.test(password));
   }, [password])
 
-  // Redirect if already logged in
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/dashboard");
-    }
-  }, [isAuthenticated, router]);
+  // // Redirect if already logged in
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     router.push("/dashboard");
+  //   }
+  // }, [isAuthenticated, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

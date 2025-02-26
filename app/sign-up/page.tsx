@@ -266,7 +266,7 @@ const CompanySignup = () => {
                                                 </div>
                                             </div>
 
-                                            {success ? <div className="reg-sucess-message">Registration successful</div> : <></>}
+                                            {success ? <div className="reg-sucess-message text-green-600">Registration successful</div> : <></>}
                                         </form>
                                     </div>
                                 </div>
