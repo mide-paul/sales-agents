@@ -22,6 +22,8 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
+    const [matchPassword, setMatchPassword] = useState('');
+    const [validMatch, setValidMatch] = useState(false);
     const [loading, setLoading] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -33,34 +35,35 @@ const Login = () => {
 
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password));
-    }, [password]);
+        setValidMatch(password === matchPassword);
+    }, [password, matchPassword])
 
     useEffect(() => {
         const fetchUser = async () => {
-          try {
-            const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: 'include'  // This ensures cookies and credentials are sent
-            });
-      
-            if (!response.ok) {
-              throw new Error("Failed to verify user.");
+            try {
+                const response = await fetch("https://api.hosoptima.com/api/v1/sales/auth/verify", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: 'include'  // This ensures cookies and credentials are sent
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to verify user.");
+                }
+
+                const data = await response.json();
+
+                setUser(data.data); // Save user details
+                setEmail(data.data.email); // Auto-fill email
+            } catch (err: unknown) {
+                setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
             }
-      
-            const data = await response.json();
-            
-            setUser(data.data); // Save user details
-            setEmail(data.data.email); // Auto-fill email
-          } catch (err: unknown) {
-            setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
-          }
         };
-      
+
         fetchUser();
-      }, [setUser]);
+    }, [setUser]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -76,10 +79,11 @@ const Login = () => {
                     email,
                     password,
                 }),
+                credentials: 'include'  // This ensures cookies and credentials are sent
             });
 
             if (!response.ok) {
-                throw new Error("Login failed. Please check your password.");
+                throw new Error("Login failed. Please try again.");
             }
 
             const data = await response.json();
@@ -100,10 +104,10 @@ const Login = () => {
                         <Image src={logo} alt="logo image" />
                     </div>
                     <h3 className="ml-0 mt-11 text-blue-950 lg:text-2xl font-bold">
-                        Complete your account to continue
+                        Setup your account to continue
                     </h3>
                     <p className="ml-0 mt-1 pt-2 text-black text-sm font-normal">
-                        Enter the password you would like to use to login below
+                        Enter the password you would like to use to sign up below
                     </p>
 
                     {fetchError && <p className="text-red-600 text-center text-sm mt-2">{fetchError}</p>}
@@ -133,19 +137,38 @@ const Login = () => {
                         </button>
                     </div>
 
+                    <div className="relative flex mt-4 items-center">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="confirmpassword"
+                            placeholder="Confirm Password"
+                            onChange={(e) => setMatchPassword(e.target.value)}
+                            value={matchPassword}
+                            required
+                            className="min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-xs lg:text-sm text-dark bg-white border rounded pr-2"
+                        />
+                        <Image src={lock} alt="lock-icon" className="absolute left-2" />
+                        <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="relative right-7 text-gray-600">
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                    </div>
+
                     {error && <p className="text-red-600 text-center text-xs font-semibold mt-2">{error}</p>}
 
                     <button
-                        disabled={!validPassword}
+                        disabled={!validPassword || !validMatch ? true : false}
                         type="submit"
                         className="bg-blue-950 h-6.2 w-full p-2 text-sm text-white rounded mt-3 cursor-pointer hover:bg-blue-900 disabled:bg-gray-400">
-                        {loading ? "Signing in..." : "Sign in"}
+                        {loading ? "Signing up..." : "Complete sign up"}
                     </button>
 
                     <div className="flex items-center">
                         <Image src={google} alt="" className="absolute size-4 mt-3 ml-9 lg:ml-36 z-20" />
                         <div className="text-blue-950 text-sm text-center w-full pl-8 lg:pl-12 mt-3 border font-bold p-2 w-24.2 rounded hover:bg-gray-300 cursor-pointer z-10">
-                            Sign In with Google
+                            Sign Up with Google
                         </div>
                     </div>
 

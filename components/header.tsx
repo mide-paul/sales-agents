@@ -9,14 +9,20 @@ import bell from './../public/icons/bell.svg';
 import line from './../public/icons/line_dark.png';
 import question_circle from './../public/icons/question_circle.svg';
 
+interface Notification {
+  id: number;
+  message: string;
+  read: boolean;
+}
+
 export const Header = () => {
   const user = useAuthStore(state => state.user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications] = useState([
-    { id: 1, message: 'New message from Admin' },
-    { id: 2, message: 'Your account has been updated' }
+  const [notifications, setNotifications] = useState<Notification[]>([
+    { id: 1, message: 'New message from Admin', read: false },
+    { id: 2, message: 'Your account has been updated', read: false }
   ]);
   // const [notifications, setNotifications] = useState([]);
 
@@ -48,9 +54,18 @@ export const Header = () => {
   //       console.error('Error fetching notifications:', error);
   //     }
   //   };
-  
+
   //   fetchNotifications();
   // }, []);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  const handleNotificationClick = (notificationId: number) => {
+    setNotifications(prev =>
+      prev.map(n => (n.id === notificationId ? { ...n, read: true } : n))
+    );
+    router.push(`/notification-details?id=${notificationId}`);
+  };
 
   return (
     <div>
@@ -67,9 +82,9 @@ export const Header = () => {
           <div className="relative">
             <button onClick={() => setShowNotifications(!showNotifications)} className="relative">
               <Image src={bell} alt="notification" className="w-6 h-6" />
-              {notifications.length > 0 && (
+              {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
-                  {notifications.length}
+                  {unreadCount}
                 </span>
               )}
             </button>
@@ -78,8 +93,13 @@ export const Header = () => {
               <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-30">
                 <ul className="p-2">
                   {notifications.length > 0 ? (
-                    notifications.map((notification) => (
-                      <li key={notification.id} className="text-xs text-gray-700 p-2 border-b last:border-b-0 hover:bg-gray-100">
+                    notifications.map(notification => (
+                      <li
+                        key={notification.id}
+                        className={`text-xs p-2 border-b last:border-b-0 hover:bg-gray-100 cursor-pointer ${notification.read ? 'text-gray-400' : 'text-gray-700 font-semibold'
+                          }`}
+                        onClick={() => handleNotificationClick(notification.id)}
+                      >
                         {notification.message}
                       </li>
                     ))
