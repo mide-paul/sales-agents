@@ -67,7 +67,7 @@ export const useAuthStore = create<IAuth>((set) => {
     signup: async (email, password, first_name, last_name, phone) => {
       set({ isLoading: true, error: null });
       try {
-        const response = await axios.post(`${API_URL}/api/v1/crm/auth/register`, { email, password, first_name, last_name, phone });
+        const response = await axios.post(`${API_URL}/api/v1/sales/auth/register`, { email, password, first_name, last_name, phone });
         const user = response.data.data;
         set({ user, isAuthenticated: true, isLoading: false });
         saveUserToLocalStorage(user);
@@ -81,7 +81,7 @@ export const useAuthStore = create<IAuth>((set) => {
     login: async (email, password) => {
       set({ isLoading: true, error: null });
       try {
-        const response = await axios.post(`${API_URL}/api/v1/crm/auth/login`, { email, password });
+        const response = await axios.post(`${API_URL}/api/v1/sales/auth/login`, { email, password });
         const user = response.data.data;
         set({ user, isAuthenticated: true });
         saveUserToLocalStorage(user);

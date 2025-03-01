@@ -36,7 +36,7 @@ const Security = () => {
     <div>
       <div>
         <div>
-          <h3 className="relative text-dark text-sm font-bold text-left ml-7 mt-8 lg:ml-7 lg:mt-8">Change Password</h3>
+          <h3 className="relative text-black text-sm font-bold text-left ml-7 mt-8 lg:ml-7 lg:mt-8">Change Password</h3>
         </div>
         <div>
           <form className="relative bg-white p-4 w-80 lg:w-96 h-full border rounded ml-7 mt-4 lg:ml-7 lg:mt-4">

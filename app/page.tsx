@@ -10,7 +10,7 @@ import lock from './../public/icons/lock_dark.svg';
 import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "./store/authStore";
 
-const EMAIL_REGEX = /^(?=.*[a-z])(?=.*[@]).{3,23}$/;
+const EMAIL_REGEX = /^(?=.*[a-z])(?=.*[@]).{3,100}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?&()_+={}[:;'"<>,|/~!@#$%]).{8,15}$/;
 
 
@@ -110,7 +110,7 @@ const CompanyLogin = () => {
             <h3 className="ml-0 mt-11 text-blue-950 text-base font-bold">
               Sign In
             </h3>
-            <p className="ml-0 mt-1 pt-2 text-dark text-sm font-normal">
+            <p className="ml-0 mt-1 pt-2 text-black text-sm font-normal">
               Welcome back! Please enter your details below
             </p>
           </div>
@@ -127,7 +127,7 @@ const CompanyLogin = () => {
               required
               aria-invalid={validEmail ? "false" : "true"}
               aria-describedby="uidnote"
-              className="mt-10 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+              className="mt-10 w-24.2 p-2 pl-8 text-sm text-black bg-white border border-gray rounded"
             />
             <Image src={envelope} alt="" className="-mt-8 ml-2" />
           </div>
@@ -143,7 +143,7 @@ const CompanyLogin = () => {
               autoComplete="new-password"
               aria-invalid={validPassword ? "false" : "true"}
               aria-describedby="pwdnote"
-              className="mt-0 min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-sm text-dark bg-white border border-gray rounded pr-2"
+              className="mt-0 min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-sm text-black bg-white border border-gray rounded pr-2"
             />
             <Image src={lock} alt="" className="absolute left-2" />
             <button
@@ -194,7 +194,7 @@ const CompanyLogin = () => {
           </div>
 
           {/* <div>
-                      <p className="relative text-dark text-sm lg:text-center lg:mt-6 xl:mt-6 xl:ml-1 xx:mt-6 xx:ml-1 z-10">
+                      <p className="relative text-black text-sm lg:text-center lg:mt-6 xl:mt-6 xl:ml-1 xx:mt-6 xx:ml-1 z-10">
                         Don&apos;t have an account?
                         <Link href="/sign-up"><span className="text-blue font-semibold pl-0.5">
                           sign Up</span>

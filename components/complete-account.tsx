@@ -76,19 +76,18 @@ const Login = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    email,
                     password,
                 }),
                 credentials: 'include'  // This ensures cookies and credentials are sent
             });
 
             if (!response.ok) {
-                throw new Error("Login failed. Please try again.");
+                throw new Error("Sign up failed. Please try again.");
             }
 
             const data = await response.json();
             setUser(data.data);
-            router.push("/dashboard");
+            router.push("/");
         } catch (err: unknown) {
             setFetchError(err instanceof Error ? err.message : "An unexpected error occurred.");
         } finally {
@@ -113,8 +112,9 @@ const Login = () => {
                     {fetchError && <p className="text-red-600 text-center text-sm mt-2">{fetchError}</p>}
 
                     <div className="flex flex-col mt-6 gap-1">
-                        <div className="p-2 pl-8 text-xs lg:text-sm text-gray-500 bg-gray-300 border rounded">
-                            {email || "example@email.com"}
+                        <div
+                        className="p-2 pl-8 text-xs lg:text-sm text-gray-500 bg-gray-300 border rounded">
+                            {email || "loading..."}
                         </div>
                         <Image src={envelope} alt="email-icon" className="-mt-7 lg:-mt-8 ml-2" />
                     </div>
@@ -126,7 +126,7 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             value={password}
                             required
-                            className="min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-xs lg:text-sm text-dark bg-white border rounded pr-2"
+                            className="min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-xs lg:text-sm text-black bg-white border rounded pr-2"
                         />
                         <Image src={lock} alt="lock-icon" className="absolute left-2" />
                         <button
@@ -145,7 +145,7 @@ const Login = () => {
                             onChange={(e) => setMatchPassword(e.target.value)}
                             value={matchPassword}
                             required
-                            className="min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-xs lg:text-sm text-dark bg-white border rounded pr-2"
+                            className="min-w-[230px] lg:min-w-[420px] p-2 pl-8 text-xs lg:text-sm text-black bg-white border rounded pr-2"
                         />
                         <Image src={lock} alt="lock-icon" className="absolute left-2" />
                         <button

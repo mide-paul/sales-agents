@@ -146,7 +146,7 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validFirstName ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-black bg-white border border-gray rounded"
                                                 />
                                                 <Image src={user} alt="" className="-mt-8 ml-2" />
                                             </div>
@@ -161,7 +161,7 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validLastName ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-black bg-white border border-gray rounded"
                                                 />
                                                 <Image src={user} alt="" className="-mt-8 ml-2" />
                                             </div>
@@ -178,7 +178,7 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validEmail ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-black bg-white border border-gray rounded"
                                                 />
                                                 <Image src={sms} alt="" className="-mt-8 ml-2" />
                                             </div>
@@ -194,7 +194,7 @@ const CompanySignup = () => {
                                                     required
                                                     aria-invalid={validPhone ? "false" : "true"}
                                                     aria-describedby="uidnote"
-                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="mt-4 w-24.2 p-2 pl-8 text-sm text-black bg-white border border-gray rounded"
                                                 />
                                                 <Image src={call} alt="" className="-mt-8 ml-2 size-5" />
                                             </div>
@@ -208,7 +208,7 @@ const CompanySignup = () => {
                                                     value={password}
                                                     required
                                                     autoComplete="new-password"
-                                                    className="w-full p-2 pl-8 pr-10 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="w-full p-2 pl-8 pr-10 text-sm text-black bg-white border border-gray rounded"
                                                 />
                                                 <Image src={lock} alt="" className="absolute left-2 top-1/2 -translate-y-1/2 size-5" />
                                                 <button
@@ -229,7 +229,7 @@ const CompanySignup = () => {
                                                     value={matchPassword}
                                                     required
                                                     autoComplete="new-password"
-                                                    className="w-full p-2 pl-8 pr-10 text-sm text-dark bg-white border border-gray rounded"
+                                                    className="w-full p-2 pl-8 pr-10 text-sm text-black bg-white border border-gray rounded"
                                                 />
                                                 <Image src={lock} alt="" className="absolute left-2 top-1/2 -translate-y-1/2 size-5" />
                                                 <button

@@ -84,11 +84,11 @@ const Profile = () => {
                         height={20}
                     />
                     {user && (
-                        <h3 className="relative -mt-10 ml-24 text-dark text-sm font-semibold text-left lg:-mt-10 lg:ml-24">
+                        <h3 className="relative -mt-10 ml-24 text-black text-sm font-semibold text-left lg:-mt-10 lg:ml-24">
                             {profile.firstName} {profile.lastName}
                         </h3>
                     )}
-                    <h3 className="relative mt-1 ml-24 text-dark text-sm font-normal text-left lg:mt-1 lg:ml-24">
+                    <h3 className="relative mt-1 ml-24 text-black text-sm font-normal text-left lg:mt-1 lg:ml-24">
                         {profile.email}
                     </h3>
                     <h3

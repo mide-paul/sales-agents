@@ -89,7 +89,7 @@ const BankDetails: React.FC = () => {
   return (
     <div>
       <div>
-        <h3 className="relative text-dark text-sm font-bold text-left ml-7 mt-8 lg:ml-7 lg:mt-8">
+        <h3 className="relative text-black text-sm font-bold text-left ml-7 mt-8 lg:ml-7 lg:mt-8">
           Account Details
         </h3>
         {/* Display saved details */}
