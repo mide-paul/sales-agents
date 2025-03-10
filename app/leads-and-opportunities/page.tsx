@@ -16,8 +16,8 @@ const Leads = () => {
             </div>
             <div className="flex flex-col">
                 <div>
-                    <div className='w-screen h-full lg:h-full lg:max-w-5xl bg-white pt-1 pb-1 pr-5 mr-8 mt-8 lg:mt-14 md:ml-64 lg:ml-72 2xl:w-max-w-7xl rounded'>
-                        <div className='mt-3 ml-0 lg:ml-4 mr-0 h-full lg:w-max-w-xl lg:h-full bg-white shadow-md rounded'>
+                    <div className='w-screen h-full lg:h-full min-w-[520px] lg:max-w-5xl bg-white pt-1 pb-1 lg:pr-6 mr-8 mt-8 lg:mt-14 md:ml-64 lg:ml-72 2xl:w-max-w-7xl rounded'>
+                        <div className='mt-3 ml-0 lg:ml-3 mr-0 h-full w-full lg:w-full lg:w-max-w-xl lg:h-full bg-white shadow-md rounded'>
                             <LeadsTable />
                         </div>
                     </div>

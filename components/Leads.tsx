@@ -16,8 +16,8 @@ interface Lead {
     lastName: string;
     company: string;
     companySize: number;
-    source: string;
-    stage: string;
+    source: string | { id: number; name: string }; 
+    stage: string | { id: number; name: string };
     status: string;
     image: string; // Image URL for the lead
     type: string;
@@ -32,14 +32,19 @@ interface LeadOption {
     name: string;
 }
 
+interface LeadApiResponse {
+    data: Lead[];
+    count: number;
+}
+
 const LeadsTable: React.FC = () => {
 
     // integrate endpoints
-    const [leads] = useState<Lead[]>([]);
+    const [leads, setLeads] = useState<Lead[]>([]);
     const [leadSources, setLeadSources] = useState<LeadOption[]>([]);
     const [leadStages, setLeadStages] = useState<LeadOption[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [totalLeads] = useState<number>(0);
+    const [totalLeads, setTotalLeads] = useState<number>(0);
     const [leadsPerPage] = useState<number>(10);
     const [filter, setFilter] = useState({
         leadType: "",
@@ -53,70 +58,18 @@ const LeadsTable: React.FC = () => {
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
     const [loading] = useState<boolean>(false);
 
-    // const fetchLeads = async () => {
-    //     setLoading(true);
-    //     try {
-    //         if (typeof window === "undefined") {
-    //             throw new Error("Client-side only logic. `window` is not available.");
-    //         }
-
-    //         const token = localStorage.getItem("token");
-
-    //         if (!token) {
-    //             console.error("❌ No auth token found!");
-    //             alert("Authentication required. Please log in again.");
-    //             setLoading(false);
-    //             return;
-    //         }
-
-    //         const response = await axios.get<LeadApiResponse>("https://api.hosoptima.com/api/v1/crm/leads", {
-    //             headers: { Authorization: `Bearer ${token}` },
-    //             params: { status: "open", page: currentPage, limit: leadsPerPage },
-    //         });
-
-    //         await axios.post(
-    //             "https://api.hosoptima.com/api/v1/crm/leads/new",
-    //             newLead,
-    //             {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`,
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         );
-
-    //         console.log("✅ Leads fetched successfully:", response.data.data);
-
-    //         if (Array.isArray(response.data.data)) {
-    //             const formattedLeads = response.data.data.map((lead) => ({
-    //                 id: lead.id,
-    //                 firstName: lead.firstName,
-    //                 lastName: lead.lastName,
-    //                 company: lead.company,
-    //                 companySize: lead.companySize,
-    //                 source: lead.source?.name || "N/A",
-    //                 stage: lead.stage?.name || "N/A",
-    //                 status: lead.status,
-    //                 image: lead.image || "N/A",
-    //                 type: lead.type || "N/A",
-    //                 leadType: lead.type || "N/A",
-    //                 assignedTo: lead.assignedTo?.identifier || "Unassigned",
-    //                 notes: lead.notes || "No notes available",
-    //                 assign: lead.assign || "N/A"
-    //             }));
-    //             setLeads(formattedLeads);
-    //             setTotalLeads(response.data.count || 0);
-    //         } else {
-    //             console.error("🚨 API response format unexpected:", response.data);
-    //             setLeads([]);
-    //         }
-    //     } catch (error) {
-    //         console.error("❌ API Request Failed:", error);
-    //         alert("Failed to fetch leads. Check console for details.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    const fetchLeads = async () => {
+        try {
+            const token = "your_auth_token_here";
+            const response = await axios.get<LeadApiResponse>("https://api.hosoptima.com/api/v1/crm/leads", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setLeads(response.data.data);
+            setTotalLeads(response.data.count);
+        } catch (error) {
+            console.error("Failed to fetch leads:", error);
+        }
+    };
 
     // Fetch Lead Sources
     const fetchLeadSources = async () => {
@@ -138,9 +91,9 @@ const LeadsTable: React.FC = () => {
         }
     };
 
-    // useEffect(() => {
-    //     fetchLeads();
-    // }, [currentPage, filter]);
+    useEffect(() => {
+        fetchLeads();
+    }, [currentPage, filter]);
 
     useEffect(() => {
         fetchLeadSources();
@@ -258,9 +211,15 @@ const LeadsTable: React.FC = () => {
                                             />
                                         </span>
                                         {/* Ensure you are accessing the name property if source is an object */}
-                                        {lead.source || "N/A"}
+                                        {typeof lead.source === "object" && lead.source !== null
+                                            ? lead.source.name
+                                            : lead.source || "N/A"}
                                     </td>
-                                    <td className="p-2 text-xs">{lead.stage || "N/A"}</td> {/* Handle missing stage data */}
+                                    <td className="p-2 text-xs">
+                                    {typeof lead.stage === "object" && lead.stage !== null
+                                            ? lead.stage.name
+                                            : lead.stage || "N/A"}
+                                    </td>
                                     <td
                                         className={`p-2 font-medium text-xs ${lead.status === "Open" ? "text-green-600" : "text-red-600"}`}
                                     >
